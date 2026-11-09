@@ -1058,20 +1058,17 @@ def hauptprogramm():
             break
 
 
-        except Exception as fehler:         				                     	    print()
-            print("Fehler:", fehler)
+        except Exception as fehler:
+        print("Fehler:", fehler)
 
-            try:
-
-                sprechen(
-                    "Es ist ein Fehler aufgetreten. "
-                    "Die genaue Meldung steht "
-                    "im Fenster."
-                )
-
-            except Exception:
-
-                pass
+        try:
+            sprechen(
+                "Es ist ein Fehler aufgetreten. "
+                "Die genaue Meldung steht "
+                "im Fenster."
+            )
+        except Exception:
+            pass
 
             time.sleep(1)
 
