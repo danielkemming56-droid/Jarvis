@@ -573,6 +573,7 @@ def lokale_funktion(frage):
         or "uhrzeit" in normal
     ):
 
+
         uhrzeit = datetime.now().strftime(
             "%H:%M"
         )
@@ -580,6 +581,101 @@ def lokale_funktion(frage):
         return (
             True,
             f"Es ist {uhrzeit} Uhr.",
+            False,
+        )
+            # =========================
+    # TIMER
+    # =========================
+    global timer_ende
+
+    # Timer stellen
+    if "timer" in normal and (
+        "stell" in normal
+        or "stelle" in normal
+        or "starte" in normal
+        or "timer auf" in normal
+    ):
+        try:
+            zahl = re.search(r"\d+", normal)
+
+            if not zahl:
+                return (
+                    True,
+                    "Wie lange soll der Timer laufen?",
+                    False,
+                )
+
+            zahl = int(zahl.group())
+
+            if "sekunde" in normal:
+                sekunden = zahl
+                einheit = "Sekunden"
+
+            elif "stunde" in normal:
+                sekunden = zahl * 3600
+                einheit = "Stunden"
+
+            else:
+                sekunden = zahl * 60
+                einheit = "Minuten"
+
+            timer_ende = time.time() + sekunden
+
+            return (
+                True,
+                f"Timer auf {zahl} {einheit} gestellt.",
+                False,
+            )
+
+        except Exception:
+            return (
+                True,
+                "Der Timer konnte nicht gestartet werden.",
+                False,
+            )
+
+    # Restzeit abfragen
+    if (
+        "wie lange" in normal
+        and "timer" in normal
+    ):
+        if timer_ende is None:
+            return (
+                True,
+                "Es läuft gerade kein Timer.",
+                False,
+            )
+
+        rest = int(timer_ende - time.time())
+
+        if rest <= 0:
+            timer_ende = None
+            return (
+                True,
+                "Der Timer ist abgelaufen.",
+                False,
+            )
+
+        minuten = rest // 60
+        sekunden = rest % 60
+
+        return (
+            True,
+            f"Noch {minuten} Minuten und {sekunden} Sekunden.",
+            False,
+        )
+
+    # Timer stoppen
+    if (
+        "stoppe den timer" in normal
+        or "timer stoppen" in normal
+        or "timer abbrechen" in normal
+    ):
+        timer_ende = None
+
+        return (
+            True,
+            "Timer gestoppt.",
             False,
         )
 
