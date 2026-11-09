@@ -1072,7 +1072,7 @@ def hauptprogramm():
 
             time.sleep(1)
 
-    aufraeumen()
+            aufraeumen()
 
 
 # =========================================================
