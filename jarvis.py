@@ -794,6 +794,49 @@ def lokale_funktion(frage):
         )
 
         # Rechner schließen
+        # Sprachrechner
+    if (
+        "plus" in normal
+        or "minus" in normal
+        or "mal" in normal
+        or "geteilt durch" in normal
+    ):
+        try:
+            rechnung = normal
+
+            rechnung = rechnung.replace("was ist", "")
+            rechnung = rechnung.replace("rechne", "")
+            rechnung = rechnung.replace("plus", "+")
+            rechnung = rechnung.replace("minus", "-")
+            rechnung = rechnung.replace("mal", "*")
+            rechnung = rechnung.replace("geteilt durch", "/")
+
+            rechnung = re.sub(r"[^0-9+\-*/(). ]", "", rechnung)
+
+            if not rechnung.strip():
+                return True, "Ich konnte keine Rechnung erkennen.", False
+
+            ergebnis = eval(
+                rechnung,
+                {"__builtins__": {}},
+                {}
+            )
+
+            return (
+                True,
+                f"Das Ergebnis ist {ergebnis}.",
+                False,
+            )
+
+        except Exception:
+            return (
+                True,
+                "Die Rechnung konnte ich nicht berechnen.",
+                False,
+            )
+
+    # Rechner schließen
+
     if (
         "schliesse den rechner" in normal
         or "rechner schliessen" in normal
